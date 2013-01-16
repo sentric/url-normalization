@@ -66,7 +66,7 @@ Rather than providing several traditional types of normalization for SEO purpose
         
  2. Build:
  
-        $ mvn package  
+        $ mvn assembly:assembly
          
  3. Test:
 
