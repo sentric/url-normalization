@@ -76,4 +76,8 @@ Rather than providing several traditional types of normalization for SEO purpose
 ## Example Code
 
         $ URL url = new URL("http://www.example.com:80/bar.html");
-        $ url.getNormalizedUrl(); // --> com.example/bar.html
+        $ url.getNormalizedUrl(); // --> com.example/bar.html    
+        
+## License
+
+url-normalization is released under Apache License Version 2.0, see LICENSE.txt for details.

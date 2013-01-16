@@ -1,5 +1,9 @@
 *.class
-
+.project
+.DS_Store
+.classpath
+.settings/
+target/
 # Package Files #
 *.jar
 *.war
