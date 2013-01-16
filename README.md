@@ -80,4 +80,6 @@ Rather than providing several traditional types of normalization for SEO purpose
         
 ## License
 
-url-normalization is released under Apache License Version 2.0, see LICENSE.txt for details.
+url-normalization is released under Apache License Version 2.0, see LICENSE.txt for details.   
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/6724398ec02b3c118e7e9a76a5f6227b "githalytics.com")](http://githalytics.com/sentric/url-normalization)
