@@ -1,8 +1,33 @@
 ## url-normalization
 
-URL normalization (or URL canonicalization) is the process by which URLs are modified and standardized in a consistent manner. The goal of the normalization process is to transform a URL into a normalized or canonical URL so it is possible to determine if two syntactically different URLs may be equivalent.  For more detail see http://en.wikipedia.org/wiki/URL_normalization
+URL normalization (or URL canonicalization) in general is the process by which URLs are modified and standardized in a consistent manner. The goal of the normalization process is to transform a URL into a normalized or canonical URL so it is possible to determine if two syntactically different URLs may be equivalent. For more detail see http://en.wikipedia.org/wiki/URL_normalization
 
-This java library for URL normalization (or URL canonicalization).
+Rather than providing several traditional types of normalization for SEO purpose this java libraries provides transforming URLs into comparable and therefore sortable URLs. You can use this code whenever a URL is used as (primary) key in your application or storage system. This library produces URL by inverting the domain level labels. 
+
+## Examples
+
+        ch.sentric/blog/berlin-buzzwords-2012-presentation-and-highlights
+        ch.sentric/blog/berlin-buzzwords-2012-review-from-a-search-perspective
+        ch.sentric/blog/comparing-cloudera-impala
+        ch.sentric/blog/cucumber-goes-hadoop
+        ch.sentric/blog/ein-treffen-mit-james-kinley-von-cloudera
+        ch.sentric/blog/hadoop-best-practice-cluster-checklist
+        ch.sentric/blog/hbase-sizing-notes
+        ch.sentric/blog/highlights-of-apache-lucene-solr-4-0
+        ch.sentric/blog/how-should-pig-and-hive-be-integrated-to-access-data-in-hadoop
+        ch.sentric/blog/how-to-determine-hbase-row-sizes
+        ch.sentric/blog/log-data-analysis-what-is-the-most-popular-apache-webserver-version
+        ch.sentric/blog/monitoring-web-apps-with-cucumber
+        ch.sentric/blog/rebuilding-a-solr-index-the-hard-way
+        ch.sentric/blog/sentric-at-strata-conference-hadoop-world-2012-in-new-york
+        ch.sentric/blog/sentric-becomes-cloudera-connect-partner
+        ch.sentric/blog/sentric-speaking-at-apachecon-europe-2012
+        ch.sentric/blog/whats-an-appropriate-use-case-for-kafka
+        ch.sentric/blog/why-hadoop-and-why-now
+        ch.sentric/blog/why-we-chose-solr-4-0-instead-of-elasticsearch
+
+## Normalization process
+
 
 # Normalizations that Preserve Semantics
 
