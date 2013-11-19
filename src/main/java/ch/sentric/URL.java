@@ -129,8 +129,19 @@ public class URL {
 		+ (this.fragment == null ? "" : "#" + this.fragment);
     }
 
-    public String getNormalizedUrl() {
-	return this.authority.getOptimizedForProximityOrder() + this.path.getReEncoded().getAsString() + this.query.getAsString(true, true);
+    /**
+     * By default, this reverses the domain parts in order to maintain backwards compatibility for those already using the library
+     */
+    public String getNormalizedUrl(){
+    return getNormalizedUrl(true);
+    }
+
+    /**
+     * Gives you the option to either reverse the domain parts (www.example.com => com.example) or not (www.example.com => example.com)
+     * it still does all the other magic: drops the w's, lowercase the domain, sort parameters, etc.
+     */
+    public String getNormalizedUrl(Boolean reverseDomainParts) {
+	return this.authority.getOptimizedForProximityOrder(reverseDomainParts) + this.path.getReEncoded().getAsString() + this.query.getAsString(true, true);
     }
 
     /**

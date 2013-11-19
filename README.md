@@ -2,7 +2,7 @@
 
 URL normalization (or URL canonicalization) in general is the process by which URLs are modified and standardized in a consistent manner. The goal of the normalization process is to transform a URL into a normalized or canonical URL so it is possible to determine if two syntactically different URLs may be equivalent. For more detail see http://en.wikipedia.org/wiki/URL_normalization
 
-Rather than providing several traditional types of normalization for SEO purpose this java libraries provides transforming URLs into comparable and therefore sortable URLs. You can use this code whenever a URL is used as (primary) key in your application or storage system. This library produces URL by inverting the domain level labels. 
+Rather than providing several traditional types of normalization for SEO purpose this java libraries provides transforming URLs into comparable and therefore sortable URLs. You can use this code whenever a URL is used as (primary) key in your application or storage system. This library produces URL by inverting the domain level labels by default, but also gives the option not to.
 
 ## Examples
 

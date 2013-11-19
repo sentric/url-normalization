@@ -83,8 +83,12 @@ public class IPv4Address implements HostName {
 	return result;
     }
 
+    /**
+     * @param reverseDomainParts Ignored: reversing IP addresses would not make sense
+     * @return the ip address in string format (xxx.xxx.xxx.xxx)
+     */
     @Override
-    public String getOptimizedForProximityOrder() {
+    public String getOptimizedForProximityOrder(Boolean reverseDomainParts) {
 	return getAsString();
     }
 

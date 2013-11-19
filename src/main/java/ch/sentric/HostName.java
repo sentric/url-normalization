@@ -25,7 +25,7 @@ public interface HostName {
      * 
      * @return optimized host name
      */
-    public String getOptimizedForProximityOrder();
+    public String getOptimizedForProximityOrder(Boolean reverseDomainParts);
 
     /**
      * Returns the hostname.

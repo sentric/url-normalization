@@ -90,8 +90,8 @@ public class Authority {
 	return (this.user != null || this.password != null ? this.user + ":" + this.password + "@" : "") + this.hostName.getAsString() + (this.port != -1 ? ":" + this.port : "");
     }
 
-    public String getOptimizedForProximityOrder() {
-	return this.hostName.getOptimizedForProximityOrder();
+    public String getOptimizedForProximityOrder(Boolean reverseDomainParts) {
+	return this.hostName.getOptimizedForProximityOrder(reverseDomainParts);
     }
 
     @Override
