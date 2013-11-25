@@ -15,7 +15,9 @@
  */
 package ch.sentric;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The {@link Path} representing a path delimited by '/'.
@@ -51,11 +53,21 @@ public class Path {
      * @return endocoded path
      */
     public Path getReEncoded() {
-	final String[] newPathParts = new String[getPathParts().length];
-	for (int i = 0; i < getPathParts().length; i++) {
-	    newPathParts[i] = percentCodec.encodePathPart(percentCodec.decode(getPathParts()[i]));
-	}
-	return new Path(newPathParts);
+        final List<String> newPathParts = new ArrayList<String>();
+        for (int i = 0; i < getPathParts().length; i++) {
+            if (".".equals(getPathParts()[i]))
+                continue;
+            if ("..".equals(getPathParts()[i])){
+                newPathParts.remove(i-1);
+                continue;
+            }
+            newPathParts.add(percentCodec.encodePathPart(percentCodec.decode(getPathParts()[i])));
+        }
+
+        String[] strResult=new String[newPathParts.size()];
+        newPathParts.toArray(strResult);
+
+        return new Path(strResult);
     }
 
     /**
