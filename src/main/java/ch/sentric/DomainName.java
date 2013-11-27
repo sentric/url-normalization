@@ -31,103 +31,105 @@ public class DomainName implements HostName {
 
     /**
      * The constructor, initializing the domain.
-     * 
-     * @param domain
-     *            as string
+     *
+     * @param domain as string
      */
     public DomainName(final String domain) {
-	final StringTokenizer tokenizer = new StringTokenizer(domain, DOMAIN_NAME_DELIMITER);
-	while (tokenizer.hasMoreTokens()) {
-	    final String current = tokenizer.nextToken();
-	    this.parts.add(current.toLowerCase(Locale.ENGLISH));
-	}
+        final StringTokenizer tokenizer = new StringTokenizer(domain, DOMAIN_NAME_DELIMITER);
+        while (tokenizer.hasMoreTokens()) {
+            final String current = tokenizer.nextToken();
+            this.parts.add(current.toLowerCase(Locale.ENGLISH));
+        }
     }
 
     @Override
     public String getAsString() {
-	return concatenate(this.parts, DOMAIN_NAME_DELIMITER);
+        return concatenate(this.parts, DOMAIN_NAME_DELIMITER);
     }
 
     public String getAsReversedString() {
-	return reverseConcatenate(this.parts, DOMAIN_NAME_DELIMITER);
+        return reverseConcatenate(this.parts, DOMAIN_NAME_DELIMITER);
     }
 
     private List<String> stripWWW(final List<String> list) {
-	final ArrayList<String> result = new ArrayList<String>(list.size());
+        final ArrayList<String> result = new ArrayList<String>(list.size());
 
-	boolean isFirst = true;
-	for (final String item : list) {
-	    if (isFirst && item.equalsIgnoreCase("www")) {
-		continue;
-	    }
-	    isFirst = false;
-	    result.add(item);
-	}
+        boolean isFirst = true;
+        for (final String item : list) {
+            if (isFirst && item.equalsIgnoreCase("www")) {
+                continue;
+            }
+            isFirst = false;
+            result.add(item);
+        }
 
-	return result;
+        return result;
     }
 
     private String concatenate(final List<String> list, final String separator) {
-	final StringBuilder builder = new StringBuilder();
-	final ListIterator<String> it = list.listIterator();
+        final StringBuilder builder = new StringBuilder();
+        final ListIterator<String> it = list.listIterator();
 
-	while (it.hasNext()) {
-	    builder.append(it.next());
+        while (it.hasNext()) {
+            builder.append(it.next());
 
-	    if (it.hasNext()) {
-		builder.append(separator);
-	    }
-	}
-	return builder.toString();
+            if (it.hasNext()) {
+                builder.append(separator);
+            }
+        }
+        return builder.toString();
     }
 
     private String reverseConcatenate(final List<String> list, final String separator) {
-	final StringBuilder builder = new StringBuilder();
-	final ListIterator<String> it = list.listIterator(list.size());
+        final StringBuilder builder = new StringBuilder();
+        final ListIterator<String> it = list.listIterator(list.size());
 
-	while (it.hasPrevious()) {
-	    builder.append(it.previous());
+        while (it.hasPrevious()) {
+            builder.append(it.previous());
 
-	    if (it.hasPrevious()) {
-		builder.append(separator);
-	    }
-	}
-	return builder.toString();
+            if (it.hasPrevious()) {
+                builder.append(separator);
+            }
+        }
+        return builder.toString();
     }
 
     @Override
-    public String getOptimizedForProximityOrder() {
-	return reverseConcatenate(stripWWW(this.parts), DOMAIN_NAME_DELIMITER);
+    public String getOptimizedForProximityOrder(Boolean reverseDomain) {
+        if (reverseDomain)
+            return reverseConcatenate(stripWWW(this.parts), DOMAIN_NAME_DELIMITER);
+        else
+            return concatenate(stripWWW(this.parts), DOMAIN_NAME_DELIMITER);
     }
 
     @Override
     public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((this.parts == null) ? 0 : this.parts.hashCode());
-	return result;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.parts == null) ? 0 : this.parts.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(final Object obj) {
-	if (this == obj) {
-	    return true;
-	}
-	if (obj == null) {
-	    return false;
-	}
-	if (getClass() != obj.getClass()) {
-	    return false;
-	}
-	final DomainName other = (DomainName) obj;
-	if (this.parts == null) {
-	    if (other.parts != null) {
-		return false;
-	    }
-	} else if (!this.parts.equals(other.parts)) {
-	    return false;
-	}
-	return true;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DomainName other = (DomainName) obj;
+        if (this.parts == null) {
+            if (other.parts != null) {
+                return false;
+            }
+        } else if (!this.parts.equals(other.parts)) {
+            return false;
+        }
+        return true;
     }
 
 }

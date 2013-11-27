@@ -29,115 +29,111 @@ public class Query {
 
     /**
      * The constructor, initializing a query.
-     * 
-     * @param list
-     *            list of {@lin k QueryKeyValuePair}s
-     * @param delimiter
-     *            the delimiter
+     *
+     * @param list      list of {@lin k QueryKeyValuePair}s
+     * @param delimiter the delimiter
      */
     public Query(final List<QueryKeyValuePair> list, final char delimiter) {
-	if (null == list) {
-	    this.list = new ArrayList<QueryKeyValuePair>(0);
-	} else {
-	    this.list = list;
-	}
+        if (null == list) {
+            this.list = new ArrayList<QueryKeyValuePair>(0);
+        } else {
+            this.list = list;
+        }
 
-	this.delimiter = delimiter;
+        this.delimiter = delimiter;
     }
 
     /**
      * Empty constructor, initializing the query with standard delimiter.
      */
     public Query() {
-	this(null, STANDARD_DELIMITER);
+        this(null, STANDARD_DELIMITER);
     }
 
     public String getAsString() {
-	return getAsString(false, false);
+        return getAsString(false, false);
     }
 
     /**
      * Returns the query as {@link String}. When prefixQuestionMark is true, the
      * query starts with '?'. When sort is true the query is sorted.
-     * 
-     * @param prefixQuestionMark
-     *            true when query should start with '?'
-     * @param sort
-     *            true when sorting is requested
+     *
+     * @param prefixQuestionMark true when query should start with '?'
+     * @param sort               true when sorting is requested
      * @return the query as {@link String}
      */
     public String getAsString(final boolean prefixQuestionMark, final boolean sort) {
-	if (this.list.size() == 0) {
-	    return "";
-	}
-	List<QueryKeyValuePair> list;
-	if (sort) {
-	    list = new ArrayList<QueryKeyValuePair>(this.list);
-	    Collections.sort(list);
-	} else {
-	    list = this.list;
-	}
+        if (this.list.size() == 0) {
+            return "";
+        }
+        List<QueryKeyValuePair> list;
+        if (sort) {
+            list = new ArrayList<QueryKeyValuePair>(this.list);
+            Collections.sort(list);
+        } else {
+            list = this.list;
+        }
 
-	return (prefixQuestionMark ? "?" : "") + listToString(list);
+        return (prefixQuestionMark ? "?" : "") + listToString(list);
     }
 
     /**
      * Returns a sorted query as {@link String} without a leading '?'.
-     * 
+     *
      * @return sorted query
      */
     public String getAsSortedString() {
-	return getAsString(false, true);
+        return getAsString(false, true);
     }
 
     private String listToString(final List<QueryKeyValuePair> list) {
-	final StringBuilder builder = new StringBuilder();
-	boolean isFirst = true;
-	for (final QueryKeyValuePair pair : list) {
-	    if (!isFirst) {
-		builder.append(delimiter);
-	    }
-	    builder.append(pair.getKey());
-	    if (null != pair.getValue()) {
-		builder.append("=").append(pair.getValue());
-	    }
-	    isFirst = false;
-	}
-	return builder.toString();
+        final StringBuilder builder = new StringBuilder();
+        boolean isFirst = true;
+        for (final QueryKeyValuePair pair : list) {
+            if (!isFirst) {
+                builder.append(delimiter);
+            }
+            builder.append(pair.getKey());
+            if (null != pair.getValue()) {
+                builder.append("=").append(pair.getValue());
+            }
+            isFirst = false;
+        }
+        return builder.toString();
     }
 
     @Override
     public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + delimiter;
-	result = prime * result + ((list == null) ? 0 : list.hashCode());
-	return result;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + delimiter;
+        result = prime * result + ((list == null) ? 0 : list.hashCode());
+        return result;
     }
 
     @Override
     public boolean equals(final Object obj) {
-	if (this == obj) {
-	    return true;
-	}
-	if (obj == null) {
-	    return false;
-	}
-	if (getClass() != obj.getClass()) {
-	    return false;
-	}
-	final Query other = (Query) obj;
-	if (delimiter != other.delimiter) {
-	    return false;
-	}
-	if (list == null) {
-	    if (other.list != null) {
-		return false;
-	    }
-	} else if (!list.equals(other.list)) {
-	    return false;
-	}
-	return true;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Query other = (Query) obj;
+        if (delimiter != other.delimiter) {
+            return false;
+        }
+        if (list == null) {
+            if (other.list != null) {
+                return false;
+            }
+        } else if (!list.equals(other.list)) {
+            return false;
+        }
+        return true;
     }
 
 }

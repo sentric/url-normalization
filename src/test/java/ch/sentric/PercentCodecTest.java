@@ -27,30 +27,30 @@ public class PercentCodecTest {
 
     @Test
     public void testDecodeIgnoresIsolatedPercent() {
-	Assert.assertEquals("a%b", codec.decode("a%b"));
-	Assert.assertEquals("%", codec.decode("%"));
-	Assert.assertEquals("%%", codec.decode("%%"));
-	Assert.assertEquals("% %", codec.decode("% %"));
-	Assert.assertEquals("%% ", codec.decode("%% "));
-	Assert.assertEquals("hallo%welt%wie%gehts", codec.decode("hallo%welt%wie%gehts"));
-	Assert.assertEquals(" % ", codec.decode("%20%%20"));
+        Assert.assertEquals("a%b", codec.decode("a%b"));
+        Assert.assertEquals("%", codec.decode("%"));
+        Assert.assertEquals("%%", codec.decode("%%"));
+        Assert.assertEquals("% %", codec.decode("% %"));
+        Assert.assertEquals("%% ", codec.decode("%% "));
+        Assert.assertEquals("hallo%welt%wie%gehts", codec.decode("hallo%welt%wie%gehts"));
+        Assert.assertEquals(" % ", codec.decode("%20%%20"));
     }
 
     @Test
     public void testEncodeQueryComponent() {
-	Assert.assertEquals("%25%26%3b%3d%3a%3f%23", codec.encodeQueryComponent("%&;=:?#"));
-	Assert.assertEquals("h%25a%26l%3bl%3do%3a%3fw%23elt", codec.encodeQueryComponent("h%a&l;l=o:?w#elt"));
-	Assert.assertEquals("", codec.encodeQueryComponent(""));
-	Assert.assertEquals("/!'()@[],", codec.encodeQueryComponent("/!'()@[],"));
+        Assert.assertEquals("%25%26%3b%3d%3a%3f%23", codec.encodeQueryComponent("%&;=:?#"));
+        Assert.assertEquals("h%25a%26l%3bl%3do%3a%3fw%23elt", codec.encodeQueryComponent("h%a&l;l=o:?w#elt"));
+        Assert.assertEquals("", codec.encodeQueryComponent(""));
+        Assert.assertEquals("/!'()@[],", codec.encodeQueryComponent("/!'()@[],"));
     }
 
     @Test
     public void testEncodeWhiteSpace() {
-	Assert.assertEquals("+", codec.encodeQueryComponent(" "));
-	Assert.assertEquals("+", codec.encodePathPart(" "));
-	Assert.assertEquals("++", codec.encodeQueryComponent("  "));
-	Assert.assertEquals("++", codec.encodePathPart("  "));
-	Assert.assertEquals("a+a", codec.encodeQueryComponent("a a"));
-	Assert.assertEquals("a+a", codec.encodePathPart("a a"));
+        Assert.assertEquals("+", codec.encodeQueryComponent(" "));
+        Assert.assertEquals("+", codec.encodePathPart(" "));
+        Assert.assertEquals("++", codec.encodeQueryComponent("  "));
+        Assert.assertEquals("++", codec.encodePathPart("  "));
+        Assert.assertEquals("a+a", codec.encodeQueryComponent("a a"));
+        Assert.assertEquals("a+a", codec.encodePathPart("a a"));
     }
 }

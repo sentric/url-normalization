@@ -15,12 +15,12 @@
  */
 package ch.sentric;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 
 /**
  * <p>
@@ -34,7 +34,7 @@ public class QueryFactory {
 
     /**
      * URL query string filters to apply.
-     * 
+     * <p/>
      * <ul>
      * <li>WebTrends (WT.): see
      * http://www.heureka.com/upload/AdministrationUsersGuide.pdf, Chapter 27
@@ -46,87 +46,87 @@ public class QueryFactory {
      * </ul>
      */
     private static ArrayList<String> filters = new ArrayList<String>(Arrays.asList("utm", "WT.", "OVKEY", "YSMKEY", "OVRAW", "YSMRAW", "OVMTC", "YSMMTC", "OVADID", "YSMADID",
-	    "OVADID", "YSMADID", "OVKWID", "YSMKWID", "OVCAMPGID", "YSMCAMPGID", "OVADGRPID", "YSMADGRPID"));
+            "OVADID", "YSMADID", "OVKWID", "YSMKWID", "OVCAMPGID", "YSMCAMPGID", "OVADGRPID", "YSMADGRPID"));
 
     public Query build(final String q) {
-	if (null == q || "".equalsIgnoreCase(q)) {
-	    return new Query();
-	}
-	final ArrayList<QueryKeyValuePair> list = new ArrayList<QueryKeyValuePair>(0);
+        if (null == q || "".equalsIgnoreCase(q)) {
+            return new Query();
+        }
+        final ArrayList<QueryKeyValuePair> list = new ArrayList<QueryKeyValuePair>(0);
 
-	ParserState state = ParserState.START;
-	final StringTokenizer tokenizer = new StringTokenizer(q, "=&", true);
-	String key = null;
-	while (tokenizer.hasMoreTokens()) {
-	    final String token = tokenizer.nextToken();
+        ParserState state = ParserState.START;
+        final StringTokenizer tokenizer = new StringTokenizer(q, "=&", true);
+        String key = null;
+        while (tokenizer.hasMoreTokens()) {
+            final String token = tokenizer.nextToken();
 
-	    switch (state) {
-	    case DELIMITER:
-		if (token.equals("&")) {
-		    state = ParserState.KEY;
-		}
-		break;
+            switch (state) {
+                case DELIMITER:
+                    if (token.equals("&")) {
+                        state = ParserState.KEY;
+                    }
+                    break;
 
-	    case KEY:
-		if (!token.equals("=") && !token.equals("&") && !token.equalsIgnoreCase("PHPSESSID") && !token.equalsIgnoreCase("JSESSIONID")) {
-		    key = token;
-		    state = ParserState.EQUAL;
-		}
-		break;
+                case KEY:
+                    if (!token.equals("=") && !token.equals("&") && !token.equalsIgnoreCase("PHPSESSID") && !token.equalsIgnoreCase("JSESSIONID")) {
+                        key = token;
+                        state = ParserState.EQUAL;
+                    }
+                    break;
 
-	    case EQUAL:
-		if (token.equals("=")) {
-		    state = ParserState.VALUE;
-		} else if (token.equals("&")) {
-		    list.add(new QueryKeyValuePair(key, null));
-		    state = ParserState.KEY;
-		}
-		break;
+                case EQUAL:
+                    if (token.equals("=")) {
+                        state = ParserState.VALUE;
+                    } else if (token.equals("&")) {
+                        list.add(new QueryKeyValuePair(key, null));
+                        state = ParserState.KEY;
+                    }
+                    break;
 
-	    case VALUE:
-		if (!token.equals("=") && !token.equals("&")) {
-		    if (token.contains(";jsessionid") || token.contains(";JSESSIONID")) {
-			list.add(new QueryKeyValuePair(key, token.substring(0, token.lastIndexOf(";"))));
-		    } else {
-			list.add(new QueryKeyValuePair(key, token));
-		    }
-		    state = ParserState.DELIMITER;
-		} else if (token.equals("&")) {
-		    list.add(new QueryKeyValuePair(key, null));
-		    state = ParserState.KEY;
-		}
-		break;
+                case VALUE:
+                    if (!token.equals("=") && !token.equals("&")) {
+                        if (token.contains(";jsessionid") || token.contains(";JSESSIONID")) {
+                            list.add(new QueryKeyValuePair(key, token.substring(0, token.lastIndexOf(";"))));
+                        } else {
+                            list.add(new QueryKeyValuePair(key, token));
+                        }
+                        state = ParserState.DELIMITER;
+                    } else if (token.equals("&")) {
+                        list.add(new QueryKeyValuePair(key, null));
+                        state = ParserState.KEY;
+                    }
+                    break;
 
-	    case START:
-		if (!token.equalsIgnoreCase("PHPSESSID") && !token.equalsIgnoreCase("JSESSIONID")) {
-		    key = token;
-		    state = ParserState.EQUAL;
-		}
-		break;
+                case START:
+                    if (!token.equalsIgnoreCase("PHPSESSID") && !token.equalsIgnoreCase("JSESSIONID")) {
+                        key = token;
+                        state = ParserState.EQUAL;
+                    }
+                    break;
 
-	    default:
-		break;
-	    }
-	}
-	CollectionUtils.filter(list, new Predicate() {
+                default:
+                    break;
+            }
+        }
+        CollectionUtils.filter(list, new Predicate() {
 
-	    @Override
-	    public boolean evaluate(final Object object) {
-		boolean allowedQueryParameter = true;
-		final QueryKeyValuePair queryKeyValuePair = (QueryKeyValuePair) object;
-		for (final String filter : filters) {
-		    if (queryKeyValuePair.getKey().startsWith(filter)) {
-			allowedQueryParameter = false;
-		    }
-		}
-		return allowedQueryParameter;
-	    }
-	});
+            @Override
+            public boolean evaluate(final Object object) {
+                boolean allowedQueryParameter = true;
+                final QueryKeyValuePair queryKeyValuePair = (QueryKeyValuePair) object;
+                for (final String filter : filters) {
+                    if (queryKeyValuePair.getKey().startsWith(filter)) {
+                        allowedQueryParameter = false;
+                    }
+                }
+                return allowedQueryParameter;
+            }
+        });
 
-	return new Query(list, '&');
+        return new Query(list, '&');
     }
 
     private enum ParserState {
-	KEY, VALUE, DELIMITER, EQUAL, START
+        KEY, VALUE, DELIMITER, EQUAL, START
     }
 }
