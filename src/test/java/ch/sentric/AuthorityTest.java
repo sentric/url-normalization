@@ -25,15 +25,15 @@ public class AuthorityTest {
 
     @Test
     public void equalsShouldReturnTrue() {
-	final Authority auth1 = new Authority(new DomainName("gamespot.com"), -1, null);
-	final Authority auth2 = new Authority(new DomainName("gamespot.com"), -1, null);
-	Assert.assertTrue("equals should be true", auth1.equals(auth2));
+        final Authority auth1 = new Authority(new DomainName("gamespot.com"), -1, null);
+        final Authority auth2 = new Authority(new DomainName("gamespot.com"), -1, null);
+        Assert.assertTrue("equals should be true", auth1.equals(auth2));
     }
 
     @Test
     public void equalsShouldReturnFalse() {
-	final Authority auth1 = new Authority(new DomainName("gamespot.com"), -1, null);
-	final Authority auth2 = new Authority(new DomainName("gamespot2.com"), -1, null);
-	Assert.assertFalse("equals should be false", auth1.equals(auth2));
+        final Authority auth1 = new Authority(new DomainName("gamespot.com"), -1, null);
+        final Authority auth2 = new Authority(new DomainName("gamespot2.com"), -1, null);
+        Assert.assertFalse("equals should be false", auth1.equals(auth2));
     }
 }

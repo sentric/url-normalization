@@ -41,218 +41,204 @@ public class UrlUtil {
     /**
      * retrieves the top-level-domain for an optimized-site-url in reversed
      * order.
-     * 
+     * <p/>
      * Example: uk.co.bbc.subdomain.www becomes uk.co.bbc
-     * 
-     * @param normalizedOrderSite
-     *            site in reverse order
+     *
+     * @param normalizedOrderSite site in reverse order
      * @return top level-domain in reverse order
      */
     public static String siteToTopLevel(final String normalizedOrderSite) {
-	return reverseUrlOrder(urlToTopLevel(reverseUrlOrder(normalizedOrderSite)));
+        return reverseUrlOrder(urlToTopLevel(reverseUrlOrder(normalizedOrderSite)));
     }
 
     /**
      * retrieves the top-level-domain for an url in normal order.
-     * 
+     * <p/>
      * Example: www.subdomain.bbc.co.uk becomes bbc.co.uk
-     * 
-     * @param url
-     *            site in normal order
+     *
+     * @param url site in normal order
      * @return top level-domain in normal order
      */
     public static String urlToTopLevel(final String url) {
-	final Matcher matcher = REGEXP.matcher(url);
-	if (matcher.find()) {
-	    return url.substring(matcher.start(), matcher.end());
-	} else {
-	    return url;
-	}
+        final Matcher matcher = REGEXP.matcher(url);
+        if (matcher.find()) {
+            return url.substring(matcher.start(), matcher.end());
+        } else {
+            return url;
+        }
     }
 
     /**
      * retrieves the parent-level-domain for an optimized-site-url in reversed
      * order.
-     * 
+     * <p/>
      * Example: uk.co.bbc.subdomain.forum becomes uk.co.bbc.subdomain
-     * 
-     * @param normalizedOrderSite
-     *            site in reverse order
+     *
+     * @param normalizedOrderSite site in reverse order
      * @return parent level-domain in reverse order
      */
     public static String getParentSite(final String normalizedOrderSite) {
-	return reverseUrlOrder(getParentUrl(reverseUrlOrder(normalizedOrderSite)));
+        return reverseUrlOrder(getParentUrl(reverseUrlOrder(normalizedOrderSite)));
     }
 
     /**
      * retrieves the parent-level-domain for an url in normal order.
-     * 
+     * <p/>
      * Example: forum.subdomain.bbc.co.uk becomes subdomain.bbc.co.uk
-     * 
-     * @param nurl
-     *            site in normal order
+     *
+     * @param nurl site in normal order
      * @return parent level-domain in normal order
      */
     public static String getParentUrl(final String url) {
-	final String topLevelUrl = urlToTopLevel(url);
-	if (topLevelUrl.equals(url)) {
-	    return url;
-	} else {
-	    return url.substring(url.indexOf("."));
-	}
+        final String topLevelUrl = urlToTopLevel(url);
+        if (topLevelUrl.equals(url)) {
+            return url;
+        } else {
+            return url.substring(url.indexOf("."));
+        }
     }
 
     /**
      * retrieves the subdomain-domain for an optimized-site-url.
-     * 
+     * <p/>
      * Example: http://www.subdomain.bbc.co.uk/foo/bar becomes www.subdomain
-     * 
-     * @param url
-     *            the url of the site
+     *
+     * @param url the url of the site
      * @return subdomain
      */
     public static String subDomain(final URL url) {
-	String subdomain = "www";
-	if (IPv4Address.parseIPv4String(url.getAuthority().getAsString()) > -1) {
-	    subdomain = url.getAuthority().getAsString();
-	} else {
-	    final Matcher matcher = REGEXP.matcher(url.getAuthority().getAsString());
-	    if (matcher.find() && matcher.start() != 0) {
-		subdomain = url.getAuthority().getAsString().substring(0, matcher.start() - 1);
-	    }
-	}
-	return subdomain;
+        String subdomain = "www";
+        if (IPv4Address.parseIPv4String(url.getAuthority().getAsString()) > -1) {
+            subdomain = url.getAuthority().getAsString();
+        } else {
+            final Matcher matcher = REGEXP.matcher(url.getAuthority().getAsString());
+            if (matcher.find() && matcher.start() != 0) {
+                subdomain = url.getAuthority().getAsString().substring(0, matcher.start() - 1);
+            }
+        }
+        return subdomain;
     }
 
     /**
      * reverses the Order of the URL-Parts.
-     * 
+     * <p/>
      * Example: uk.co.bbc.subdomain becomes subdomain.bbc.co.uk
-     * 
-     * @param site
-     *            url without protocol
+     *
+     * @param site url without protocol
      * @return site in reversed order
      */
     public static String reverseUrlOrder(final String site) {
-	if (IPv4Address.parseIPv4String(site) > -1) {
-	    return site;
-	} else {
-	    return reverseString(site, ".");
-	}
+        if (IPv4Address.parseIPv4String(site) > -1) {
+            return site;
+        } else {
+            return reverseString(site, ".");
+        }
     }
 
     /**
      * Check whether the URL is an AJAX URL that could be converted to a
      * GoogeBot URL.
-     * 
-     * @see https 
+     *
+     * @param url the original url to check for #!
+     * @return true when the url is a escape-fragmentable url
+     * @see https
      *      ://code.google.com/intl/de-DE/web/ajaxcrawling/docs/getting-started
      *      .html
-     * @param url
-     *            the original url to check for #!
-     * @return true when the url is a escape-fragmentable url
      */
     public static boolean isEscapeFragmentableUrl(final URL url) {
-	return url.getFragment() != null && url.getFragment().length() > 0 && url.getFragment().charAt(0) == '!';
+        return url.getFragment() != null && url.getFragment().length() > 0 && url.getFragment().charAt(0) == '!';
     }
 
     /**
      * @see UrlUtil#isEscapeFragmentUrl(String)
      */
     public static boolean isEscapeFragmentUrl(final URL url) {
-	return isEscapeFragmentUrl(url.getGivenInputUrl());
+        return isEscapeFragmentUrl(url.getGivenInputUrl());
     }
 
     /**
      * @see UrlUtil#isEscapeFragmentUrl(String)
      */
     public static boolean isEscapeFragmentUrl(final URI url) {
-	return isEscapeFragmentUrl(url.toString());
+        return isEscapeFragmentUrl(url.toString());
     }
 
     /**
      * Check whether the URL is an AJAX URL that could be convered to a GoogeBot
      * URL.
-     * 
-     * @see https 
+     *
+     * @param url the original url to check for _escaped_fragment_
+     * @return true when the url is an escape-fragment url
+     * @see https
      *      ://code.google.com/intl/de-DE/web/ajaxcrawling/docs/getting-started
      *      .html
-     * @param url
-     *            the original url to check for _escaped_fragment_
-     * @return true when the url is an escape-fragment url
      */
     public static boolean isEscapeFragmentUrl(final String url) {
-	return url.matches("^.*[?&]_escaped_fragment_=.*$");
+        return url.matches("^.*[?&]_escaped_fragment_=.*$");
     }
 
     /**
      * Converts to Googlebot-URL.
-     * 
-     * @see https 
+     *
+     * @param url the original url with #!
+     * @return the escaped-fragment url
+     * @throws UnsupportedEncodingException encoding not found
+     * @throws MalformedURLException        url malformed
+     * @see https
      *      ://code.google.com/intl/de-DE/web/ajaxcrawling/docs/getting-started
      *      .html
-     * @param url
-     *            the original url with #!
-     * @return the escaped-fragment url
-     * @throws UnsupportedEncodingException
-     *             encoding not found
-     * @throws MalformedURLException
-     *             url malformed
      */
     public static URL toEscapedFragmentUrl(final URL url) throws MalformedURLException, UnsupportedEncodingException {
-	if (!isEscapeFragmentableUrl(url)) {
-	    throw new IllegalArgumentException("the given URL is no escape-fragmentable url: " + url);
-	}
-	final String urlWithoutFragment = url.getUrlWithoutFragment();
-	final char delimiter = urlWithoutFragment.contains("?") ? '&' : '?';
-	final String encodedFragment = EscapedFragmentEncoder.encode(url.getFragment().substring(1), Charset.defaultCharset().toString());
-	return new URL(urlWithoutFragment + delimiter + "_escaped_fragment_=" + encodedFragment);
+        if (!isEscapeFragmentableUrl(url)) {
+            throw new IllegalArgumentException("the given URL is no escape-fragmentable url: " + url);
+        }
+        final String urlWithoutFragment = url.getUrlWithoutFragment();
+        final char delimiter = urlWithoutFragment.contains("?") ? '&' : '?';
+        final String encodedFragment = EscapedFragmentEncoder.encode(url.getFragment().substring(1), Charset.defaultCharset().toString());
+        return new URL(urlWithoutFragment + delimiter + "_escaped_fragment_=" + encodedFragment);
     }
 
     /**
      * @see #fromEscapedFragmentUrl(URL)
      */
     public static URI fromEscapedFragmentUrl(final URI uri) throws UnsupportedEncodingException, MalformedURLException {
-	try {
-	    return new URI(fromEscapedFragmentUrl(new URL(uri)).getGivenInputUrl());
-	} catch (final URISyntaxException e) {
-	    throw new MalformedURLException(e.toString());
-	}
+        try {
+            return new URI(fromEscapedFragmentUrl(new URL(uri)).getGivenInputUrl());
+        } catch (final URISyntaxException e) {
+            throw new MalformedURLException(e.toString());
+        }
     }
 
     /**
      * Converts back from Googlebot-URL.
-     * 
-     * @see https 
+     *
+     * @param url the escaped-fragment url
+     * @return the original url with #!
+     * @throws UnsupportedEncodingException encoding not found
+     * @throws MalformedURLException        url malformed
+     * @see https
      *      ://code.google.com/intl/de-DE/web/ajaxcrawling/docs/getting-started
      *      .html
-     * @param url
-     *            the escaped-fragment url
-     * @return the original url with #!
-     * @throws UnsupportedEncodingException
-     *             encoding not found
-     * @throws MalformedURLException
-     *             url malformed
      */
     public static URL fromEscapedFragmentUrl(final URL url) throws UnsupportedEncodingException, MalformedURLException {
-	if (!isEscapeFragmentUrl(url)) {
-	    throw new IllegalArgumentException("the given URL is no escape-fragmented url: " + url);
-	}
-	final String urlAsString = url.getGivenInputUrl();
-	final String encodedFragment = urlAsString.replaceFirst("^.*[?&]_escaped_fragment_=", "");
-	final String decodedFragment = URLDecoder.decode(encodedFragment, Charset.defaultCharset().toString());
-	return new URL(urlAsString.replaceFirst("[?&]_escaped_fragment_=.*$", "#!" + decodedFragment));
+        if (!isEscapeFragmentUrl(url)) {
+            throw new IllegalArgumentException("the given URL is no escape-fragmented url: " + url);
+        }
+        final String urlAsString = url.getGivenInputUrl();
+        final String encodedFragment = urlAsString.replaceFirst("^.*[?&]_escaped_fragment_=", "");
+        final String decodedFragment = URLDecoder.decode(encodedFragment, Charset.defaultCharset().toString());
+        return new URL(urlAsString.replaceFirst("[?&]_escaped_fragment_=.*$", "#!" + decodedFragment));
     }
 
     private static String reverseString(final String input, final String separator) {
-	final StringTokenizer tokenizer = new StringTokenizer(input, separator);
-	final StringBuilder sb = new StringBuilder();
-	boolean first = true;
-	while (tokenizer.hasMoreTokens()) {
-	    sb.insert(0, tokenizer.nextToken() + (first ? "" : separator));
-	    first = false;
-	}
-	return sb.toString();
+        final StringTokenizer tokenizer = new StringTokenizer(input, separator);
+        final StringBuilder sb = new StringBuilder();
+        boolean first = true;
+        while (tokenizer.hasMoreTokens()) {
+            sb.insert(0, tokenizer.nextToken() + (first ? "" : separator));
+            first = false;
+        }
+        return sb.toString();
     }
 
 }

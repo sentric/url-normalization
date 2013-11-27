@@ -15,12 +15,11 @@
  */
 package ch.sentric;
 
+import junit.framework.Assert;
+import org.junit.Test;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-
-import junit.framework.Assert;
-
-import org.junit.Test;
 
 /**
  * The {@link EscapedFragmentEncoder} test class.
@@ -29,40 +28,40 @@ public class EscapedFragmentEncoderTest {
 
     @Test
     public void encodeShouldNotChangeEquals() throws UnsupportedEncodingException {
-	assertEncoding("=", "=");
+        assertEncoding("=", "=");
     }
 
     @Test
     public void encodeShouldChangeAmp() throws UnsupportedEncodingException {
-	assertEncoding("&", "%26");
+        assertEncoding("&", "%26");
     }
 
     @Test
     public void encodeShouldChangeSpace() throws UnsupportedEncodingException {
-	assertEncoding(" ", "%20");
+        assertEncoding(" ", "%20");
     }
 
     @Test
     public void encodeShouldChangeHash() throws UnsupportedEncodingException {
-	assertEncoding("#", "%23");
+        assertEncoding("#", "%23");
     }
 
     @Test
     public void encodeShouldChangePercent() throws UnsupportedEncodingException {
-	assertEncoding("%", "%25");
+        assertEncoding("%", "%25");
     }
 
     @Test
     public void encodeShouldNotChangeExplanation() throws UnsupportedEncodingException {
-	assertEncoding("!", "!");
+        assertEncoding("!", "!");
     }
 
     @Test
     public void encodeShouldChangeFullString() throws UnsupportedEncodingException {
-	assertEncoding("key1=value1&key2=value2", "key1=value1%26key2=value2");
+        assertEncoding("key1=value1&key2=value2", "key1=value1%26key2=value2");
     }
 
     private void assertEncoding(final String from, final String to) throws UnsupportedEncodingException {
-	Assert.assertEquals(to, EscapedFragmentEncoder.encode(from, Charset.defaultCharset().toString()));
+        Assert.assertEquals(to, EscapedFragmentEncoder.encode(from, Charset.defaultCharset().toString()));
     }
 }

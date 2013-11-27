@@ -29,27 +29,25 @@ public class Path {
 
     /**
      * Constructor, initializing a path.
-     * 
-     * @param path
-     *            the path as string
+     *
+     * @param path the path as string
      */
     public Path(final String path) {
-	this.pathParts = validate(path).split(PATH_SEPARATOR);
+        this.pathParts = validate(path).split(PATH_SEPARATOR);
     }
 
     /**
      * Constructor, initializing a path.
-     * 
-     * @param pathParts
-     *            the path parts as string array
+     *
+     * @param pathParts the path parts as string array
      */
     public Path(final String[] pathParts) {
-	this.pathParts = pathParts.clone();
+        this.pathParts = pathParts.clone();
     }
 
     /**
      * Returns a percent codec based encoded path.
-     * 
+     *
      * @return endocoded path
      */
     public Path getReEncoded() {
@@ -57,14 +55,14 @@ public class Path {
         for (int i = 0; i < getPathParts().length; i++) {
             if (".".equals(getPathParts()[i]))
                 continue;
-            if ("..".equals(getPathParts()[i])){
-                newPathParts.remove(i-1);
+            if ("..".equals(getPathParts()[i])) {
+                newPathParts.remove(i - 1);
                 continue;
             }
             newPathParts.add(percentCodec.encodePathPart(percentCodec.decode(getPathParts()[i])));
         }
 
-        String[] strResult=new String[newPathParts.size()];
+        String[] strResult = new String[newPathParts.size()];
         newPathParts.toArray(strResult);
 
         return new Path(strResult);
@@ -72,83 +70,83 @@ public class Path {
 
     /**
      * Returns a new Path with . and .. parts removed.
-     * 
+     * <p/>
      * TODO see bixo for implementation
      * src/main/java/bixo/urldb/SimpleUrlNormalizer.java
-     * 
+     *
      * @return new path with . and .. parts removed
      */
     public Path removeRelativePathParts() {
-	return new Path(getPathParts());
+        return new Path(getPathParts());
     }
 
     /**
      * Returns a new Path with a trailing default page like index.html removed.
-     * 
+     * <p/>
      * TODO see bixo for implementation
      * src/main/java/bixo/urldb/SimpleUrlNormalizer.java
-     * 
+     *
      * @return new Path with a trailing default page like index.html removed
      */
     public Path removeDefaultPage() {
-	return new Path(getPathParts());
+        return new Path(getPathParts());
     }
 
     /**
      * Returns the path, delimited by '/'. Removes jsession and phpsessid from
      * path.
-     * 
+     *
      * @return path
      */
     public String getAsString() {
-	final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
-	boolean isFirst = true;
-	for (final String part : getPathParts()) {
-	    if (isFirst) {
-		isFirst = false;
-	    } else {
-		builder.append(PATH_SEPARATOR);
-	    }
-	    builder.append(part);
-	}
-	return builder.toString();
+        boolean isFirst = true;
+        for (final String part : getPathParts()) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                builder.append(PATH_SEPARATOR);
+            }
+            builder.append(part);
+        }
+        return builder.toString();
     }
 
     private String[] getPathParts() {
-	return this.pathParts;
+        return this.pathParts;
     }
 
     private String validate(final String path) {
-	if (path.contains(";jsessionid") || path.contains(";JSESSIONID")) {
-	    return path.substring(0, path.lastIndexOf(";"));
-	}
-	return path;
+        if (path.contains(";jsessionid") || path.contains(";JSESSIONID")) {
+            return path.substring(0, path.lastIndexOf(";"));
+        }
+        return path;
     }
 
     @Override
     public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + Arrays.hashCode(pathParts);
-	return result;
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(pathParts);
+        return result;
     }
 
     @Override
     public boolean equals(final Object obj) {
-	if (this == obj) {
-	    return true;
-	}
-	if (obj == null) {
-	    return false;
-	}
-	if (getClass() != obj.getClass()) {
-	    return false;
-	}
-	final Path other = (Path) obj;
-	if (!Arrays.equals(pathParts, other.pathParts)) {
-	    return false;
-	}
-	return true;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Path other = (Path) obj;
+        if (!Arrays.equals(pathParts, other.pathParts)) {
+            return false;
+        }
+        return true;
     }
 }

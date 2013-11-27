@@ -25,33 +25,33 @@ import static org.junit.Assert.assertEquals;
 public class PathTest {
     @Test
     public void testGetAsString() {
-	assertEquals("/hello/world", new Path("/hello/world").getAsString());
+        assertEquals("/hello/world", new Path("/hello/world").getAsString());
     }
 
     @Test
     public void getAsStringShouldRemoveJsession() {
-	assertEquals("/1270777-1779518.html", new Path("/1270777-1779518.html;jsessionid=9ADD207E33B1E66CE6121BC73AADB986").getAsString());
+        assertEquals("/1270777-1779518.html", new Path("/1270777-1779518.html;jsessionid=9ADD207E33B1E66CE6121BC73AADB986").getAsString());
     }
 
     @Test
     public void getAsStringShouldReturnSemicolonSplittedPath() {
-	assertEquals("/wirtschaft/soziales/0;1518;769292;00.html", new Path("/wirtschaft/soziales/0;1518;769292;00.html").getAsString());
+        assertEquals("/wirtschaft/soziales/0;1518;769292;00.html", new Path("/wirtschaft/soziales/0;1518;769292;00.html").getAsString());
     }
 
     @Test
     public void getAsStringShouldNotRemovePhpsess() {
-	// this is a query, not a path
-	assertEquals("/1270777-1779518.html?phpsessid=9ADD207E33B1E66CE6121BC73AADB986",
-            new Path("/1270777-1779518.html?phpsessid=9ADD207E33B1E66CE6121BC73AADB986").getAsString());
+        // this is a query, not a path
+        assertEquals("/1270777-1779518.html?phpsessid=9ADD207E33B1E66CE6121BC73AADB986",
+                new Path("/1270777-1779518.html?phpsessid=9ADD207E33B1E66CE6121BC73AADB986").getAsString());
     }
 
     @Test
-    public void getReEncoded(){
-        assertEquals("/test2", new Path("/test1/../test2").getReEncoded().getAsString() );
-        assertEquals("/test1/test2", new Path("/test1/./test2").getReEncoded().getAsString() );
-        assertEquals("/test1/test2", new Path("/test1/test2").getReEncoded().getAsString() );
-        assertEquals("", new Path("/").getReEncoded().getAsString() );
-        assertEquals("", new Path("").getReEncoded().getAsString() );
-        assertEquals("", new Path("///").getReEncoded().getAsString() );
+    public void getReEncoded() {
+        assertEquals("/test2", new Path("/test1/../test2").getReEncoded().getAsString());
+        assertEquals("/test1/test2", new Path("/test1/./test2").getReEncoded().getAsString());
+        assertEquals("/test1/test2", new Path("/test1/test2").getReEncoded().getAsString());
+        assertEquals("", new Path("/").getReEncoded().getAsString());
+        assertEquals("", new Path("").getReEncoded().getAsString());
+        assertEquals("", new Path("///").getReEncoded().getAsString());
     }
 }

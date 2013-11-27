@@ -22,14 +22,14 @@ public interface HostName {
     /**
      * This method will return an IP address as it is and a Domain Name with the
      * parts in reversed order.
-     * 
+     *
      * @return optimized host name
      */
     public String getOptimizedForProximityOrder(Boolean reverseDomainParts);
 
     /**
      * Returns the hostname.
-     * 
+     *
      * @return hostname
      */
     public String getAsString();

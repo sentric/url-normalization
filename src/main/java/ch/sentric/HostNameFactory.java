@@ -23,16 +23,15 @@ public class HostNameFactory {
     /**
      * Factory method to create a hostname as {@link IPv4Address} or
      * {@link DomainName}.
-     * 
-     * @param parsable
-     *            the string to create the hostname for
+     *
+     * @param parsable the string to create the hostname for
      * @return a {@link HostName}
      */
     public HostName build(final String parsable) {
-	final long ipv4 = IPv4Address.parseIPv4String(parsable);
-	if (IPv4Address.ILLEGAL_IPV4 != ipv4) {
-	    return new IPv4Address(ipv4);
-	}
-	return new DomainName(parsable);
+        final long ipv4 = IPv4Address.parseIPv4String(parsable);
+        if (IPv4Address.ILLEGAL_IPV4 != ipv4) {
+            return new IPv4Address(ipv4);
+        }
+        return new DomainName(parsable);
     }
 }

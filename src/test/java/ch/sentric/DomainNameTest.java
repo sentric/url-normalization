@@ -15,10 +15,10 @@
  */
 package ch.sentric;
 
-import java.util.Locale;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Locale;
 
 /**
  * The {@link DomainName} test class.
@@ -27,56 +27,56 @@ public class DomainNameTest {
 
     @Test
     public void getAsStringShouldReturnGivenDomainAsString() {
-	Assert.assertEquals("www.koch.ro", new DomainName("www.koch.ro").getAsString());
-	Assert.assertEquals("faz.net", new DomainName("faz.net").getAsString());
-	Assert.assertEquals("äö.mydomain.de", new DomainName("äö.mydomain.de").getAsString());
+        Assert.assertEquals("www.koch.ro", new DomainName("www.koch.ro").getAsString());
+        Assert.assertEquals("faz.net", new DomainName("faz.net").getAsString());
+        Assert.assertEquals("äö.mydomain.de", new DomainName("äö.mydomain.de").getAsString());
     }
 
     @Test
     public void getAsStringShouldLowerCaseGivenDomain() {
-	Assert.assertEquals("www.KOCH.rO".toLowerCase(Locale.ENGLISH), new DomainName("www.KOCH.rO").getAsString());
-	Assert.assertEquals("faz.Net".toLowerCase(Locale.ENGLISH), new DomainName("faz.Net").getAsString());
-	Assert.assertEquals("ÄÖ.mydomain.org".toLowerCase(Locale.ENGLISH), new DomainName("ÄÖ.mydomain.org").getAsString());
+        Assert.assertEquals("www.KOCH.rO".toLowerCase(Locale.ENGLISH), new DomainName("www.KOCH.rO").getAsString());
+        Assert.assertEquals("faz.Net".toLowerCase(Locale.ENGLISH), new DomainName("faz.Net").getAsString());
+        Assert.assertEquals("ÄÖ.mydomain.org".toLowerCase(Locale.ENGLISH), new DomainName("ÄÖ.mydomain.org").getAsString());
     }
 
     @Test
     public void testGetAsReversedString() {
-	Assert.assertEquals("ro.koch.www", new DomainName("www.KOCH.rO").getAsReversedString());
-	Assert.assertEquals("www.koch.ro", new DomainName("ro.koch.www").getAsReversedString());
-	Assert.assertEquals("net.faz", new DomainName("faz.Net").getAsReversedString());
-	Assert.assertEquals("faz.net", new DomainName("net.faz").getAsReversedString());
-	Assert.assertEquals("org.mydomain.ao", new DomainName("ao.mydomain.org").getAsReversedString());
-	Assert.assertEquals("ao.mydomain.org", new DomainName("org.mydomain.ao").getAsReversedString());
+        Assert.assertEquals("ro.koch.www", new DomainName("www.KOCH.rO").getAsReversedString());
+        Assert.assertEquals("www.koch.ro", new DomainName("ro.koch.www").getAsReversedString());
+        Assert.assertEquals("net.faz", new DomainName("faz.Net").getAsReversedString());
+        Assert.assertEquals("faz.net", new DomainName("net.faz").getAsReversedString());
+        Assert.assertEquals("org.mydomain.ao", new DomainName("ao.mydomain.org").getAsReversedString());
+        Assert.assertEquals("ao.mydomain.org", new DomainName("org.mydomain.ao").getAsReversedString());
     }
 
     @Test
     public void testGetOptimizedForProximityOrder() {
-	Assert.assertEquals("ro.koch", new DomainName("www.KOCH.rO").getOptimizedForProximityOrder(true));
-	Assert.assertEquals("ro.koch", new DomainName("WWW.KOCH.rO").getOptimizedForProximityOrder(true));
-	Assert.assertEquals("net.faz", new DomainName("faz.Net").getOptimizedForProximityOrder(true));
-	Assert.assertEquals("net.faz.ww", new DomainName("ww.faz.Net").getOptimizedForProximityOrder(true));
-	Assert.assertEquals("net.faz.wwww", new DomainName("wwww.faz.Net").getOptimizedForProximityOrder(true));
-	Assert.assertEquals("obscure.www.net", new DomainName("net.www.obscure").getOptimizedForProximityOrder(true));
+        Assert.assertEquals("ro.koch", new DomainName("www.KOCH.rO").getOptimizedForProximityOrder(true));
+        Assert.assertEquals("ro.koch", new DomainName("WWW.KOCH.rO").getOptimizedForProximityOrder(true));
+        Assert.assertEquals("net.faz", new DomainName("faz.Net").getOptimizedForProximityOrder(true));
+        Assert.assertEquals("net.faz.ww", new DomainName("ww.faz.Net").getOptimizedForProximityOrder(true));
+        Assert.assertEquals("net.faz.wwww", new DomainName("wwww.faz.Net").getOptimizedForProximityOrder(true));
+        Assert.assertEquals("obscure.www.net", new DomainName("net.www.obscure").getOptimizedForProximityOrder(true));
 
-	Assert.assertEquals("koch.ro", new DomainName("www.KOCH.rO").getOptimizedForProximityOrder(false));
-	Assert.assertEquals("koch.ro", new DomainName("WWW.KOCH.rO").getOptimizedForProximityOrder(false));
-	Assert.assertEquals("faz.net", new DomainName("faz.Net").getOptimizedForProximityOrder(false));
-	Assert.assertEquals("ww.faz.net", new DomainName("ww.faz.Net").getOptimizedForProximityOrder(false));
-	Assert.assertEquals("wwww.faz.net", new DomainName("wwww.faz.Net").getOptimizedForProximityOrder(false));
-	Assert.assertEquals("net.www.obscure", new DomainName("net.www.obscure").getOptimizedForProximityOrder(false));
+        Assert.assertEquals("koch.ro", new DomainName("www.KOCH.rO").getOptimizedForProximityOrder(false));
+        Assert.assertEquals("koch.ro", new DomainName("WWW.KOCH.rO").getOptimizedForProximityOrder(false));
+        Assert.assertEquals("faz.net", new DomainName("faz.Net").getOptimizedForProximityOrder(false));
+        Assert.assertEquals("ww.faz.net", new DomainName("ww.faz.Net").getOptimizedForProximityOrder(false));
+        Assert.assertEquals("wwww.faz.net", new DomainName("wwww.faz.Net").getOptimizedForProximityOrder(false));
+        Assert.assertEquals("net.www.obscure", new DomainName("net.www.obscure").getOptimizedForProximityOrder(false));
     }
 
     @Test
     public void equalsShouldReturnTrue() {
-	final DomainName domain1 = new DomainName("gamespot.com");
-	final DomainName domain2 = new DomainName("gamespot.com");
-	Assert.assertTrue("equals should be true", domain1.equals(domain2));
+        final DomainName domain1 = new DomainName("gamespot.com");
+        final DomainName domain2 = new DomainName("gamespot.com");
+        Assert.assertTrue("equals should be true", domain1.equals(domain2));
     }
 
     @Test
     public void equalsShouldReturnFalse() {
-	final DomainName domain1 = new DomainName("gamespot.com");
-	final DomainName domain2 = new DomainName("gamespot2.com");
-	Assert.assertFalse("equals should be false", domain1.equals(domain2));
+        final DomainName domain1 = new DomainName("gamespot.com");
+        final DomainName domain2 = new DomainName("gamespot2.com");
+        Assert.assertFalse("equals should be false", domain1.equals(domain2));
     }
 }

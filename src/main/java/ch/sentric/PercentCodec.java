@@ -50,85 +50,85 @@ public class PercentCodec {
     private static final String HEX_CODES = "0123456789abcdefABCDEF";
 
     public String encodePathPart(final String pathPart) {
-	return encode(pathPart, RESERVED_PATH_CHARS);
+        return encode(pathPart, RESERVED_PATH_CHARS);
     }
 
     public String encodeQueryComponent(final String queryComponent) {
-	return encode(queryComponent, RESERVED_QUERY_CHARS);
+        return encode(queryComponent, RESERVED_QUERY_CHARS);
     }
 
     public String encode(final String component, final String reservedChars) {
-	final StringBuilder result = new StringBuilder();
-	for (int i = 0; i < component.length();) {
-	    final int codePoint = component.codePointAt(i);
-	    if (codePoint == 0x0020) {
-		result.append('+');
-	    } else if (codePoint >= 0x007F) {
-		result.append(encodeCodePoint(codePoint));
-	    } else if ((codePoint < 0x0020) || (reservedChars.indexOf((char) codePoint) != -1)) {
-		result.append(String.format("%%%02x", codePoint));
-	    } else {
-		result.append((char) codePoint);
-	    }
+        final StringBuilder result = new StringBuilder();
+        for (int i = 0; i < component.length(); ) {
+            final int codePoint = component.codePointAt(i);
+            if (codePoint == 0x0020) {
+                result.append('+');
+            } else if (codePoint >= 0x007F) {
+                result.append(encodeCodePoint(codePoint));
+            } else if ((codePoint < 0x0020) || (reservedChars.indexOf((char) codePoint) != -1)) {
+                result.append(String.format("%%%02x", codePoint));
+            } else {
+                result.append((char) codePoint);
+            }
 
-	    i += Character.charCount(codePoint);
-	}
+            i += Character.charCount(codePoint);
+        }
 
-	return result.toString();
+        return result.toString();
     }
 
     public String decode(final String url) {
-	// FUTURE - handle unsupported %uHHHH sequences for Unicode code points.
-	// FUTURE - detect & handle incorrectly encoded URLs
+        // FUTURE - handle unsupported %uHHHH sequences for Unicode code points.
+        // FUTURE - detect & handle incorrectly encoded URLs
 
-	// First, try to catch unescaped '%' characters.
-	final String result = escapeIsolatedPercentSigns(url);
+        // First, try to catch unescaped '%' characters.
+        final String result = escapeIsolatedPercentSigns(url);
 
-	try {
-	    return URLDecoder.decode(result, Charset.defaultCharset().toString());
-	} catch (final UnsupportedEncodingException e) {
-	    throw new IllegalStateException("Unexpected exception during URL decoding", e);
-	}
+        try {
+            return URLDecoder.decode(result, Charset.defaultCharset().toString());
+        } catch (final UnsupportedEncodingException e) {
+            throw new IllegalStateException("Unexpected exception during URL decoding", e);
+        }
     }
 
     private static String encodeCodePoint(final int codepoint) {
-	try {
-	    final int[] codepoints = { codepoint };
-	    final byte[] bytes = new String(codepoints, 0, 1).getBytes(Charset.defaultCharset().toString());
+        try {
+            final int[] codepoints = {codepoint};
+            final byte[] bytes = new String(codepoints, 0, 1).getBytes(Charset.defaultCharset().toString());
 
-	    final StringBuilder result = new StringBuilder();
-	    for (final byte value : bytes) {
-		result.append(String.format("%%%02x", value));
-	    }
+            final StringBuilder result = new StringBuilder();
+            for (final byte value : bytes) {
+                result.append(String.format("%%%02x", value));
+            }
 
-	    return result.toString();
-	} catch (final UnsupportedEncodingException e) {
-	    throw new IllegalStateException("Unexpected exception during URL encoding", e);
-	}
+            return result.toString();
+        } catch (final UnsupportedEncodingException e) {
+            throw new IllegalStateException("Unexpected exception during URL encoding", e);
+        }
     }
 
     private static String escapeIsolatedPercentSigns(final String in) {
-	StringBuilder builder = null;
-	int offset = 0;
-	int lastOffset = 0;
-	while ((offset = in.indexOf('%', offset)) != -1) {
+        StringBuilder builder = null;
+        int offset = 0;
+        int lastOffset = 0;
+        while ((offset = in.indexOf('%', offset)) != -1) {
 
-	    offset += 1;
+            offset += 1;
 
-	    if (offset > in.length() - 2 || HEX_CODES.indexOf(in.charAt(offset)) == -1 || HEX_CODES.indexOf(in.charAt(offset + 1)) == -1) {
-		if (null == builder) {
-		    builder = new StringBuilder();
-		}
-		builder.append(in.substring(lastOffset, offset));
-		builder.append("25");
-		lastOffset = offset;
-	    }
-	}
-	if (null != builder) {
-	    builder.append(in.substring(lastOffset));
-	    return builder.toString();
-	}
+            if (offset > in.length() - 2 || HEX_CODES.indexOf(in.charAt(offset)) == -1 || HEX_CODES.indexOf(in.charAt(offset + 1)) == -1) {
+                if (null == builder) {
+                    builder = new StringBuilder();
+                }
+                builder.append(in.substring(lastOffset, offset));
+                builder.append("25");
+                lastOffset = offset;
+            }
+        }
+        if (null != builder) {
+            builder.append(in.substring(lastOffset));
+            return builder.toString();
+        }
 
-	return in;
+        return in;
     }
 }

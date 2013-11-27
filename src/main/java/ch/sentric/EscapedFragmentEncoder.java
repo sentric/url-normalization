@@ -15,6 +15,8 @@
  */
 package ch.sentric;
 
+import sun.security.action.GetPropertyAction;
+
 import java.io.CharArrayWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -23,12 +25,10 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.security.AccessController;
 import java.util.BitSet;
 
-import sun.security.action.GetPropertyAction;
-
 /**
  * Modified Version of {@link java.net.URLEncoder} to match GoogleBots
  * specifications for AJAX Applications.
- * 
+ * <p/>
  * Ranges that are converted:
  * <ul>
  * <li>%00..20</li>
@@ -37,10 +37,10 @@ import sun.security.action.GetPropertyAction;
  * <li>%2B</li>
  * <li>%7F..FF</li>
  * </ul>
- * 
+ * <p/>
  * All Javadoc has been removed to ensure corectness. Please see JavaDoc of the
  * original {java.net.UrlEncoder} instead.
- * 
+ *
  * @see https
  *      ://code.google.com/intl/de-DE/web/ajaxcrawling/docs/specification.html
  */
@@ -52,20 +52,20 @@ public final class EscapedFragmentEncoder {
 
     static {
 
-	needEncoding = new BitSet(256);
-	int i;
-	for (i = 0x00; i <= 0x20; i++) {
-	    needEncoding.set(i);
-	}
-	needEncoding.set(0x23);
-	needEncoding.set(0x25);
-	needEncoding.set(0x26);
-	needEncoding.set(0x2B);
-	for (i = 0x7F; i <= 0xFF; i++) {
-	    needEncoding.set(i);
-	}
+        needEncoding = new BitSet(256);
+        int i;
+        for (i = 0x00; i <= 0x20; i++) {
+            needEncoding.set(i);
+        }
+        needEncoding.set(0x23);
+        needEncoding.set(0x25);
+        needEncoding.set(0x26);
+        needEncoding.set(0x2B);
+        for (i = 0x7F; i <= 0xFF; i++) {
+            needEncoding.set(i);
+        }
 
-	dfltEncName = AccessController.doPrivileged(new GetPropertyAction("file.encoding"));
+        dfltEncName = AccessController.doPrivileged(new GetPropertyAction("file.encoding"));
     }
 
     private EscapedFragmentEncoder() {
@@ -73,67 +73,63 @@ public final class EscapedFragmentEncoder {
 
     /**
      * Encodes the given string using the default encoding.
-     * 
-     * @param s
-     *            the string being encoded
+     *
+     * @param s the string being encoded
      * @return the encoded string or the input in case of an error
      */
     @Deprecated
     public static String encode(final String s) {
 
-	String str = null;
+        String str = null;
 
-	try {
-	    str = encode(s, dfltEncName);
-	} catch (final UnsupportedEncodingException e) {
-	    // The system should always have the platform default
-	    str = s;
-	}
+        try {
+            str = encode(s, dfltEncName);
+        } catch (final UnsupportedEncodingException e) {
+            // The system should always have the platform default
+            str = s;
+        }
 
-	return str;
+        return str;
     }
 
     /**
      * Returns the encoded string.
-     * 
-     * @param s
-     *            the string to encode
-     * @param enc
-     *            the name of a supported {@code Charset}
+     *
+     * @param s   the string to encode
+     * @param enc the name of a supported {@code Charset}
      * @return the encoded string
-     * @throws UnsupportedEncodingException
-     *             if the given encoding is invalid
+     * @throws UnsupportedEncodingException if the given encoding is invalid
      */
     public static String encode(final String s, final String enc) throws UnsupportedEncodingException {
 
-	boolean needToChange = false;
-	final StringBuffer out = new StringBuffer(s.length());
-	Charset charset;
-	final CharArrayWriter charArrayWriter = new CharArrayWriter();
+        boolean needToChange = false;
+        final StringBuffer out = new StringBuffer(s.length());
+        Charset charset;
+        final CharArrayWriter charArrayWriter = new CharArrayWriter();
 
-	if (enc == null) {
-	    throw new NullPointerException("charsetName");
-	}
-	try {
-	    charset = Charset.forName(enc);
-	} catch (final IllegalCharsetNameException e) {
-	    throw new UnsupportedEncodingException(enc);
-	} catch (final UnsupportedCharsetException e) {
-	    throw new UnsupportedEncodingException(enc);
-	}
+        if (enc == null) {
+            throw new NullPointerException("charsetName");
+        }
+        try {
+            charset = Charset.forName(enc);
+        } catch (final IllegalCharsetNameException e) {
+            throw new UnsupportedEncodingException(enc);
+        } catch (final UnsupportedCharsetException e) {
+            throw new UnsupportedEncodingException(enc);
+        }
 
-	for (int i = 0; i < s.length();) {
-	    int c = s.charAt(i);
-	    // System.out.println("Examining character: " + c);
-	    if (!needEncoding.get(c)) {
-		// System.out.println("Storing: " + c);
-		out.append((char) c);
-		i++;
-	    } else {
-		// convert to external encoding before hex conversion
-		do {
-		    charArrayWriter.write(c);
-		    /*
+        for (int i = 0; i < s.length(); ) {
+            int c = s.charAt(i);
+            // System.out.println("Examining character: " + c);
+            if (!needEncoding.get(c)) {
+                // System.out.println("Storing: " + c);
+                out.append((char) c);
+                i++;
+            } else {
+                // convert to external encoding before hex conversion
+                do {
+                    charArrayWriter.write(c);
+            /*
 		     * If this character represents the start of a Unicode
 		     * surrogate pair, then pass in two characters. It's not
 		     * clear what should be done if a bytes reserved in the
@@ -141,55 +137,55 @@ public final class EscapedFragmentEncoder {
 		     * pair. For now, just treat it as if it were any other
 		     * character.
 		     */
-		    if (c >= 0xD800 && c <= 0xDBFF) {
+                    if (c >= 0xD800 && c <= 0xDBFF) {
 			/*
 			 * System.out.println(Integer.toHexString(c) +
 			 * " is high surrogate");
 			 */
-			if ((i + 1) < s.length()) {
-			    final int d = s.charAt(i + 1);
+                        if ((i + 1) < s.length()) {
+                            final int d = s.charAt(i + 1);
 			    /*
 			     * System.out.println("\tExamining " +
 			     * Integer.toHexString(d));
 			     */
-			    if (d >= 0xDC00 && d <= 0xDFFF) {
+                            if (d >= 0xDC00 && d <= 0xDFFF) {
 				/*
 				 * System.out.println("\t" +
 				 * Integer.toHexString(d) +
 				 * " is low surrogate");
 				 */
-				charArrayWriter.write(d);
-				i++;
-			    }
-			}
-		    }
-		    i++;
-		} while (i < s.length() && needEncoding.get((c = s.charAt(i))));
+                                charArrayWriter.write(d);
+                                i++;
+                            }
+                        }
+                    }
+                    i++;
+                } while (i < s.length() && needEncoding.get((c = s.charAt(i))));
 
-		charArrayWriter.flush();
-		final String str = new String(charArrayWriter.toCharArray());
-		final byte[] ba = str.getBytes(charset);
-		for (final byte element : ba) {
-		    out.append('%');
-		    char ch = Character.forDigit((element >> 4) & 0xF, 16);
-		    // converting to use uppercase letter as part of
-		    // the hex value if ch is a letter.
-		    if (Character.isLetter(ch)) {
-			ch -= caseDiff;
-		    }
-		    out.append(ch);
-		    ch = Character.forDigit(element & 0xF, 16);
-		    if (Character.isLetter(ch)) {
-			ch -= caseDiff;
-		    }
-		    out.append(ch);
-		}
-		charArrayWriter.reset();
-		needToChange = true;
-	    }
-	}
+                charArrayWriter.flush();
+                final String str = new String(charArrayWriter.toCharArray());
+                final byte[] ba = str.getBytes(charset);
+                for (final byte element : ba) {
+                    out.append('%');
+                    char ch = Character.forDigit((element >> 4) & 0xF, 16);
+                    // converting to use uppercase letter as part of
+                    // the hex value if ch is a letter.
+                    if (Character.isLetter(ch)) {
+                        ch -= caseDiff;
+                    }
+                    out.append(ch);
+                    ch = Character.forDigit(element & 0xF, 16);
+                    if (Character.isLetter(ch)) {
+                        ch -= caseDiff;
+                    }
+                    out.append(ch);
+                }
+                charArrayWriter.reset();
+                needToChange = true;
+            }
+        }
 
-	return (needToChange ? out.toString() : s);
+        return (needToChange ? out.toString() : s);
     }
 
 }

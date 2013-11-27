@@ -23,10 +23,10 @@ import org.junit.Test;
  */
 public class QueryKeyValuePairTest {
     static final class Fixture {
-	static QueryKeyValuePair x = new QueryKeyValuePair("foo", "bar");
-	static QueryKeyValuePair y = new QueryKeyValuePair("foo", "bar");
-	static QueryKeyValuePair z = new QueryKeyValuePair("foo", "bar");
-	static QueryKeyValuePair notx = new QueryKeyValuePair("bar", "foo");
+        static QueryKeyValuePair x = new QueryKeyValuePair("foo", "bar");
+        static QueryKeyValuePair y = new QueryKeyValuePair("foo", "bar");
+        static QueryKeyValuePair z = new QueryKeyValuePair("foo", "bar");
+        static QueryKeyValuePair notx = new QueryKeyValuePair("bar", "foo");
     }
 
     @Test
@@ -34,25 +34,23 @@ public class QueryKeyValuePairTest {
      * A class is equal to itself.
      */
     public void testEqualToSelf() {
-	Assert.assertTrue("Class equal to itself.", Fixture.x.equals(Fixture.x));
+        Assert.assertTrue("Class equal to itself.", Fixture.x.equals(Fixture.x));
     }
 
     /**
      * x.equals(WrongType) must return false;
-     * 
      */
     @Test
     public void testPassIncompatibleTypeIsFalse() {
-	Assert.assertFalse("Passing incompatible object to equals should return false", Fixture.x.equals("string"));
+        Assert.assertFalse("Passing incompatible object to equals should return false", Fixture.x.equals("string"));
     }
 
     /**
      * x.equals(null) must return false;
-     * 
      */
     @Test
     public void testNullReferenceIsFalse() {
-	Assert.assertFalse("Passing null to equals should return false", Fixture.x == null);
+        Assert.assertFalse("Passing null to equals should return false", Fixture.x == null);
     }
 
     /**
@@ -61,8 +59,8 @@ public class QueryKeyValuePairTest {
      */
     @Test
     public void testEqualsIsReflexiveIsSymmetric() {
-	Assert.assertTrue("Reflexive test fail x,y", Fixture.x.equals(Fixture.y));
-	Assert.assertTrue("Symmetric test fail y", Fixture.y.equals(Fixture.x));
+        Assert.assertTrue("Reflexive test fail x,y", Fixture.x.equals(Fixture.y));
+        Assert.assertTrue("Symmetric test fail y", Fixture.y.equals(Fixture.x));
     }
 
     /**
@@ -71,9 +69,9 @@ public class QueryKeyValuePairTest {
      */
     @Test
     public void testEqualsIsTransitive() {
-	Assert.assertTrue("Transitive test fails x,y", Fixture.x.equals(Fixture.y));
-	Assert.assertTrue("Transitive test fails y,z", Fixture.y.equals(Fixture.z));
-	Assert.assertTrue("Transitive test fails x,z", Fixture.x.equals(Fixture.z));
+        Assert.assertTrue("Transitive test fails x,y", Fixture.x.equals(Fixture.y));
+        Assert.assertTrue("Transitive test fails y,z", Fixture.y.equals(Fixture.z));
+        Assert.assertTrue("Transitive test fails x,z", Fixture.x.equals(Fixture.z));
     }
 
     /**
@@ -81,12 +79,12 @@ public class QueryKeyValuePairTest {
      */
     @Test
     public void testEqualsIsConsistent() {
-	Assert.assertTrue("Consistent test fail x,y", Fixture.x.equals(Fixture.y));
-	Assert.assertTrue("Consistent test fail x,y", Fixture.x.equals(Fixture.y));
-	Assert.assertTrue("Consistent test fail x,y", Fixture.x.equals(Fixture.y));
-	Assert.assertFalse(Fixture.notx.equals(Fixture.x));
-	Assert.assertFalse(Fixture.notx.equals(Fixture.x));
-	Assert.assertFalse(Fixture.notx.equals(Fixture.x));
+        Assert.assertTrue("Consistent test fail x,y", Fixture.x.equals(Fixture.y));
+        Assert.assertTrue("Consistent test fail x,y", Fixture.x.equals(Fixture.y));
+        Assert.assertTrue("Consistent test fail x,y", Fixture.x.equals(Fixture.y));
+        Assert.assertFalse(Fixture.notx.equals(Fixture.x));
+        Assert.assertFalse(Fixture.notx.equals(Fixture.x));
+        Assert.assertFalse(Fixture.notx.equals(Fixture.x));
     }
 
     /**
@@ -94,9 +92,9 @@ public class QueryKeyValuePairTest {
      */
     @Test
     public void testHashcodeIsConsistent() {
-	final int initial_hashcode = Fixture.x.hashCode();
-	Assert.assertEquals("Consistent hashcode test fails", initial_hashcode, Fixture.x.hashCode());
-	Assert.assertEquals("Consistent hashcode test fails", initial_hashcode, Fixture.x.hashCode());
+        final int initial_hashcode = Fixture.x.hashCode();
+        Assert.assertEquals("Consistent hashcode test fails", initial_hashcode, Fixture.x.hashCode());
+        Assert.assertEquals("Consistent hashcode test fails", initial_hashcode, Fixture.x.hashCode());
     }
 
     /**
@@ -105,20 +103,19 @@ public class QueryKeyValuePairTest {
      */
     @Test
     public void testHashcodeTwoEqualsObjectsProduceSameNumber() {
-	final int xhashcode = Fixture.x.hashCode();
-	final int yhashcode = Fixture.y.hashCode();
-	Assert.assertEquals("Equal object, return equal hashcode test fails", xhashcode, yhashcode);
+        final int xhashcode = Fixture.x.hashCode();
+        final int yhashcode = Fixture.y.hashCode();
+        Assert.assertEquals("Equal object, return equal hashcode test fails", xhashcode, yhashcode);
     }
 
     /**
      * A more optimal implementation of hashcode ensures that if the objects are
      * unequal different integers are produced.
-     * 
      */
     @Test
     public void testHashcodeTwoUnEqualObjectsProduceDifferentNumber() {
-	final int xhashcode = Fixture.x.hashCode();
-	final int yhashcode = Fixture.notx.hashCode();
-	Assert.assertTrue("Equal object, return unequal hashcode test fails", !(xhashcode == yhashcode));
+        final int xhashcode = Fixture.x.hashCode();
+        final int yhashcode = Fixture.notx.hashCode();
+        Assert.assertTrue("Equal object, return unequal hashcode test fails", !(xhashcode == yhashcode));
     }
 }
