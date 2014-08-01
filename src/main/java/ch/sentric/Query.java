@@ -140,4 +140,8 @@ public class Query {
 	return true;
     }
 
+    public List<QueryKeyValuePair> getQueries() {
+        return this.list;
+    }
+
 }
