@@ -20,8 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.Objects;
 
 /**
  * The url class.
@@ -37,7 +36,7 @@ public class URL {
 
     /**
      * The constructor, initializing a url from {@link String}.
-     * 
+     *
      * @param url
      *            as string
      * @throws MalformedURLException
@@ -50,7 +49,7 @@ public class URL {
 
     /**
      * The constructor, initializing a url from {@link URI}.
-     * 
+     *
      * @param uri
      *            as URI
      * @throws MalformedURLException
@@ -75,14 +74,14 @@ public class URL {
     /**
      * Returns a {@link URI} representation of this object or null when not
      * valid. All fragments will be removed from the original URL.
-     * 
+     *
      * @return the uri
      * @throws URISyntaxException
      *             when the uri couldn't be parsed
      */
     public URI getURI() throws URISyntaxException {
 	URI uri = null;
-	if (StringUtils.isNotBlank(getFragment())) {
+	if (isNotBlank(getFragment())) {
 	    uri = new URI(getUrlWithoutFragment());
 	} else {
 	    uri = new URI(getGivenInputUrl());
@@ -121,7 +120,7 @@ public class URL {
     /**
      * Replaces white spaces with '+' characters, removes jsession and phpsessid
      * parameters.
-     * 
+     *
      * @return a url without white spaces and jession or phpsessid
      */
     public String getRepairedUrl() {
@@ -135,7 +134,7 @@ public class URL {
 
     /**
      * Resolve the ip address from the authority.
-     * 
+     *
      * @return ip address as string
      * @throws UnknownHostException
      *             when ip can not be resolved
@@ -150,15 +149,7 @@ public class URL {
 
     @Override
     public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + (this.authority == null ? 0 : this.authority.hashCode());
-	result = prime * result + (this.fragment == null ? 0 : this.fragment.hashCode());
-	result = prime * result + (this.givenInputUrl == null ? 0 : this.givenInputUrl.hashCode());
-	result = prime * result + (this.path == null ? 0 : this.path.hashCode());
-	result = prime * result + (this.query == null ? 0 : this.query.hashCode());
-	result = prime * result + (this.scheme == null ? 0 : this.scheme.hashCode());
-	return result;
+      return Objects.hash(authority, fragment, givenInputUrl, path, query, scheme);
     }
 
     @Override
@@ -173,53 +164,32 @@ public class URL {
 	    return false;
 	}
 	final URL other = (URL) obj;
-	if (this.authority == null) {
-	    if (other.authority != null) {
-		return false;
-	    }
-	} else if (!this.authority.equals(other.authority)) {
-	    return false;
-	}
-	if (this.fragment == null) {
-	    if (other.fragment != null) {
-		return false;
-	    }
-	} else if (!this.fragment.equals(other.fragment)) {
-	    return false;
-	}
-	if (this.givenInputUrl == null) {
-	    if (other.givenInputUrl != null) {
-		return false;
-	    }
-	} else if (!this.givenInputUrl.equals(other.givenInputUrl)) {
-	    return false;
-	}
-	if (this.path == null) {
-	    if (other.path != null) {
-		return false;
-	    }
-	} else if (!this.path.equals(other.path)) {
-	    return false;
-	}
-	if (this.query == null) {
-	    if (other.query != null) {
-		return false;
-	    }
-	} else if (!this.query.equals(other.query)) {
-	    return false;
-	}
-	if (this.scheme == null) {
-	    if (other.scheme != null) {
-		return false;
-	    }
-	} else if (!this.scheme.equals(other.scheme)) {
-	    return false;
-	}
-	return true;
+
+  return Objects.equals(authority, other.authority) &&
+    Objects.equals(fragment, other.fragment) &&
+    Objects.equals(givenInputUrl, other.givenInputUrl) &&
+    Objects.equals(path, other.path) &&
+    Objects.equals(scheme, other.scheme);
     }
+
 
     @Override
     public String toString() {
 	return this.givenInputUrl;
+    }
+
+    private boolean isNotBlank(String s) {
+      if (s == null || s.length() == 0) {
+        return false;
+      }
+
+      int len = s.length();
+      for (int i = 0; i < len; i++) {
+        if (!Character.isWhitespace(s.charAt(i))) {
+          return true;
+        }
+      }
+
+      return false;
     }
 }

@@ -17,10 +17,8 @@ package ch.sentric;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.StringTokenizer;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 
 /**
  * <p>
@@ -34,7 +32,7 @@ public class QueryFactory {
 
     /**
      * URL query string filters to apply.
-     * 
+     *
      * <ul>
      * <li>WebTrends (WT.): see
      * http://www.heureka.com/upload/AdministrationUsersGuide.pdf, Chapter 27
@@ -108,22 +106,24 @@ public class QueryFactory {
 		break;
 	    }
 	}
-	CollectionUtils.filter(list, new Predicate() {
 
-	    @Override
-	    public boolean evaluate(final Object object) {
-		boolean allowedQueryParameter = true;
-		final QueryKeyValuePair queryKeyValuePair = (QueryKeyValuePair) object;
-		for (final String filter : filters) {
-		    if (queryKeyValuePair.getKey().startsWith(filter)) {
-			allowedQueryParameter = false;
-		    }
-		}
-		return allowedQueryParameter;
-	    }
-	});
+  for (Iterator<QueryKeyValuePair> it = list.iterator(); it.hasNext();) {
+    if (shouldFilter(it.next())) {
+      it.remove();
+    }
+  }
 
 	return new Query(list, '&');
+    }
+
+    private boolean shouldFilter(QueryKeyValuePair queryKeyValuePair) {
+  boolean filterParameter = false;
+	for (final String filter : filters) {
+	    if (queryKeyValuePair.getKey().startsWith(filter)) {
+		filterParameter = true;
+	    }
+	}
+	return filterParameter;
     }
 
     private enum ParserState {
