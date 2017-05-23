@@ -17,7 +17,6 @@ package ch.sentric;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 /**
@@ -61,13 +60,13 @@ public class QueryFactoryTest {
     @Test
     public void buildShouldReturnNothingWhenJessionIsTheOnlyParameter() {
 	final Query query = new QueryFactory().build("jsessionid=9ADD207E33B1E66CE6121BC73AADB986");
-	assertEquals(StringUtils.EMPTY, query.getAsSortedString());
+	assertEquals("", query.getAsSortedString());
     }
 
     @Test
     public void buildShouldReturnNothingWhenPhpsessidIsTheOnlyParameter() {
 	final Query query = new QueryFactory().build("phpsessid=9ADD207E33B1E66CE6121BC73AADB986");
-	assertEquals(StringUtils.EMPTY, query.getAsSortedString());
+	assertEquals("", query.getAsSortedString());
     }
 
     @Test
@@ -79,14 +78,14 @@ public class QueryFactoryTest {
     @Test
     public void buildShouldRemoveGoogleUrlTrackingParameter() {
 	final Query query = new QueryFactory().build("utm_campaign=Feed%3A+TheSouthwesternSunRss+%28The+Southwestern+Sun+RSS%29&utm_medium=feed&utm_source=feedburner");
-	assertEquals(StringUtils.EMPTY, query.getAsSortedString());
+	assertEquals("", query.getAsSortedString());
     }
 
     @Test
     public void buildShouldRemoveGoogleGifRequestTrackingParameter() {
 	final Query query = new QueryFactory()
 		.build("utmwv=4&utmn=769876874&utmhn=example.com&utmcs=ISO-8859-1&utmsr=1280x1024&utmsc=32-bit&utmul=en-us&utmje=1&utmfl=9.0%20%20r115&utmcn=1&utmdt=GATC012%20setting%20variables&utmhid=2059107202&utmr=0&utmp=/auto/GATC012.html?utm_source=www.gatc012.org&utm_campaign=campaign+gatc012&utm_term=keywords+gatc012&utm_content=content+gatc012&utm_medium=medium+gatc012&utmac=UA-30138-1&utmcc=__utma%3D97315849.1774621898.1207701397.1207701397.1207701397.1%3B...  ");
-	assertEquals(StringUtils.EMPTY, query.getAsSortedString());
+	assertEquals("", query.getAsSortedString());
     }
 
     @Test
@@ -101,9 +100,9 @@ public class QueryFactoryTest {
     @Test
     public void buildShouldRemoveYahooRequestTrackingParameter() {
 	Query query = new QueryFactory().build("OVRAW=cheap%20television&OVKEY=television&OVMTC=advanced&OVKWID=4317717511&OVADID=7306185511");
-	assertEquals(StringUtils.EMPTY, query.getAsSortedString());
+	assertEquals("", query.getAsSortedString());
 	query = new QueryFactory().build("YSMCAMPGID=123456&YSMADGRPID=654321");
-	assertEquals(StringUtils.EMPTY, query.getAsSortedString());
+	assertEquals("", query.getAsSortedString());
 	// but not lowercase
 	query = new QueryFactory().build("ysmcampgid=123456&YSMADGRPID=654321");
 	assertEquals("ysmcampgid=123456", query.getAsSortedString());

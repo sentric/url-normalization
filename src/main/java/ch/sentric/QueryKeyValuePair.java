@@ -15,8 +15,7 @@
  */
 package ch.sentric;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Objects;
 
 /**
  * A {@link Comparable} key value pair, representing a query.
@@ -27,7 +26,7 @@ class QueryKeyValuePair implements Comparable<QueryKeyValuePair> {
 
     /**
      * The constructor, initializing the object.
-     * 
+     *
      * @param key
      *            the key
      * @param value
@@ -53,24 +52,23 @@ class QueryKeyValuePair implements Comparable<QueryKeyValuePair> {
 
     @Override
     public int hashCode() {
-	return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
-		append(getKey()).append(getValue()).toHashCode();
+      return Objects.hash(key, value);
     }
 
     @Override
     public boolean equals(final Object obj) {
-	if (obj == null) {
-	    return false;
-	}
-	if (obj == this) {
-	    return true;
-	}
-	if (obj.getClass() != getClass()) {
-	    return false;
-	}
+    	if (obj == null) {
+    	    return false;
+    	}
+    	if (obj == this) {
+    	    return true;
+    	}
+    	if (obj.getClass() != getClass()) {
+    	    return false;
+    	}
 
-	final QueryKeyValuePair rhs = (QueryKeyValuePair) obj;
-	return new EqualsBuilder().append(getKey(), rhs.getKey()).append(getValue(), rhs.getValue()).isEquals();
+    	final QueryKeyValuePair rhs = (QueryKeyValuePair) obj;
+      return Objects.equals(key, rhs.key) && Objects.equals(value, rhs.value);
     }
 
     public String getKey() {
